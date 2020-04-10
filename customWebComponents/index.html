@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<script type="text/javascript">
-var g = {}; // global context, see below comments
-</script>
-<script type="module">
+<meta charset="utf-8">
+<script type="module" src="./my-div.js"></script>
+<script type="module" defer>
 	// <script> of type="module" :
 	// - supports `import`
 	// - `use strict` by default
-	// - variable are not global, hence not usable in the page directly
+	// - variable are not global, so must be added to a global context
 	debugger; // add a breakpoint in inlined script if dev tool is open in browser
-	import * as m from './hello.js';
-	g.m = m;
-	g.m.RegisterComponents(); // register custom web components
+	import * as hellojs from './hello.js';
+	globalThis.hellojs = hellojs;
 </script>
 <style>
 	p {
@@ -19,4 +17,11 @@ var g = {}; // global context, see below comments
 		font-size: 2em;
 	}
 </style>
-<my-div onclick="g.m.hello()" onmouseleave="this.setValue('Hi! <p>Expecting mixed style ?</p>')"><p>Locally defined static style...</p></my-div>
+<main>
+	<my-div 
+		onclick="alert(hellojs.hello())" 
+		onmouseleave="this.setValue(`${hellojs.hello()}! <p>Expecting mixed style ?</p>`)">
+		<p>Locally defined static style...</p>
+	</my-div>
+</main>
+
